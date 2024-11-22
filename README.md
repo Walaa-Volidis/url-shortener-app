@@ -1,4 +1,4 @@
-# Todo Application
+# URL Shortener Application
 
 A simple and efficient url-shortener application built with Next.js, TypeScript, and several modern libraries for user authentication, form validation, and database management.
 
