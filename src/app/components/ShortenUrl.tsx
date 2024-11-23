@@ -28,18 +28,16 @@ export default function ShortenUrl({ url, setUrl, onSubmit }: URLInputProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={onSubmit}>
-          <div className="flex gap-4">
-            <Input
-              placeholder="Enter your long URL here..."
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              className="flex-1"
-            />
-            <Button type="submit" className="bg-blue-500 hover:bg-blue-600">
-              Shorten URL
-            </Button>
-          </div>
+        <form onSubmit={onSubmit} className="flex gap-4">
+          <Input
+            placeholder="Enter your long URL here..."
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            className="flex-1"
+          />
+          <Button type="submit" className="bg-blue-500 hover:bg-blue-600">
+            Shorten URL
+          </Button>
         </form>
       </CardContent>
     </Card>
