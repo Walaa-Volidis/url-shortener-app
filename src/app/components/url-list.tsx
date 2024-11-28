@@ -45,28 +45,28 @@ export default function UrlList({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {shortenedUrls.map((item, i) => (
+            {shortenedUrls.map(({ original, shortened, created }, i) => (
               <TableRow key={i} className="bg-white border-b hover:bg-gray-50">
                 <TableCell className="px-6 py-4 max-w-xs truncate">
-                  {item.original}
+                  {original}
                 </TableCell>
                 <TableCell className="px-6 py-4 font-medium">
-                  {item.shortened}
+                  {shortened}
                 </TableCell>
-                <TableCell className="px-6 py-4">{item.created}</TableCell>
+                <TableCell className="px-6 py-4">{created}</TableCell>
                 <TableCell className="px-6 py-4">
                   <div className="flex gap-2">
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => onCopy(item.shortened)}
+                      onClick={() => onCopy(shortened)}
                     >
                       <Copy size={16} />
                     </Button>
                     <Button
                       variant="outline"
                       size="icon"
-                      onClick={() => onVisit(item.shortened)}
+                      onClick={() => onVisit(shortened)}
                     >
                       <ExternalLink size={16} />
                     </Button>
