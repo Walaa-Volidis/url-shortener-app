@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import ShortenUrl from "./components/ShortenUrl";
-import UrlList from "./components/UrlList";
+import ShortenUrl from "./components/shorten-url";
+import UrlList from "./components/url-list";
 
 export default function URLShortener() {
   const [url, setUrl] = useState("");
