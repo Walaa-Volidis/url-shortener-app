@@ -1,10 +1,5 @@
-import type { Metadata } from "next";
+import { ClerkProvider, SignIn, SignedIn, SignedOut } from "@clerk/nextjs";
 import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "URL Shortener",
-  description: "Shorten your long URLs easily",
-};
 
 export default function RootLayout({
   children,
@@ -12,13 +7,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-      </head>
-      <body>
-        <div className="min-h-screen bg-gray-50">{children}</div>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <head>
+          <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        </head>
+        <body>
+          <SignedIn>
+            <div className="flex">
+              <main className="flex-grow">{children}</main>
+            </div>
+          </SignedIn>
+
+          <SignedOut>
+            <div className="flex justify-center items-center min-h-screen">
+              <SignIn routing="hash" />
+            </div>
+          </SignedOut>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
