@@ -13,4 +13,14 @@ model User {
   name  String
   email String  @unique
   createdAt DateTime @default(now())
+  urls  ShortenedURL[]
+}
+
+model ShortenedURL {
+  id        String   @id @default(uuid())
+  original  String
+  shortened String   @unique
+  userId    String   
+  createdAt DateTime @default(now())
+  user        User?     @relation(fields: [userId], references: [id])
 }
