@@ -1,11 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import ShortenUrl from "./components/shorten-url";
 import UrlList from "./components/url-list";
+import { useUrl } from "@/app/hooks/useUrl";
+import { useUser } from "@clerk/nextjs";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function URLShortener() {
-  const [url, setUrl] = useState("");
-
+  const { user } = useUser();
+  const userId = user?.id;
+  const { addUrl } = useUrl(userId);
   const shortenedUrls = [
     {
       original: "https://very-long-example-url.com/with/many/parameters?id=123",
@@ -19,10 +24,6 @@ export default function URLShortener() {
     },
   ];
 
-  const handleSubmit = () => {
-    console.log("Shortening URL:", url);
-  };
-
   const handleCopy = (shortenedUrl: string) => {
     navigator.clipboard.writeText(shortenedUrl);
   };
@@ -33,12 +34,13 @@ export default function URLShortener() {
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
-      <ShortenUrl url={url} setUrl={setUrl} onSubmit={handleSubmit} />
+      {userId && <ShortenUrl userId={userId} addUrl={addUrl} />}
       <UrlList
         shortenedUrls={shortenedUrls}
         onCopy={handleCopy}
         onVisit={handleVisit}
       />
+      <ToastContainer />
     </div>
   );
 }

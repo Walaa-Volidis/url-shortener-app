@@ -1,3 +1,4 @@
+import React, { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -8,14 +9,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { toast } from "react-toastify";
 
-interface URLInputProps {
-  url: string;
-  setUrl: (url: string) => void;
-  onSubmit: () => void;
+interface UrlFormProps {
+  userId: string;
+  addUrl: (formData: FormData) => Promise<void>;
 }
+export default function ShortenUrl({ userId, addUrl }: UrlFormProps) {
+  const [url, setUrl] = useState("");
 
-export default function ShortenUrl({ url, setUrl, onSubmit }: URLInputProps) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    formData.append("original", url);
+    formData.append("userId", userId);
+
+    try {
+      await addUrl(formData);
+      toast.success("url shortened successfully.");
+      setUrl("");
+    } catch (error) {
+      toast.error("Error shortening url. Please try again.");
+      console.error("Error shortening task:", error);
+    }
+  }
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -28,7 +46,7 @@ export default function ShortenUrl({ url, setUrl, onSubmit }: URLInputProps) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form onSubmit={onSubmit} className="flex gap-4">
+        <form onSubmit={handleSubmit} className="flex gap-4">
           <Input
             placeholder="Enter your long URL here..."
             value={url}

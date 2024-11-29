@@ -1,7 +1,7 @@
 export interface ShortenedURL {
   id: string;
-  originalUrl: string;
-  shortenedUrl: string;
+  original: string;
+  shortened: string;
   createdAt: string;
   userId: string;
 }
