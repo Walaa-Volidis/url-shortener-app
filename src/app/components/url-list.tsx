@@ -15,7 +15,7 @@ import { Copy, ExternalLink } from "lucide-react";
 interface ShortenedURL {
   original: string;
   shortened: string;
-  created: string;
+  createdAt: string;
 }
 
 interface URLTableProps {
@@ -45,7 +45,7 @@ export default function UrlList({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {shortenedUrls.map(({ original, shortened, created }, i) => (
+            {shortenedUrls.map(({ original, shortened, createdAt }, i) => (
               <TableRow key={i} className="bg-white border-b hover:bg-gray-50">
                 <TableCell className="px-6 py-4 max-w-xs truncate">
                   {original}
@@ -53,7 +53,7 @@ export default function UrlList({
                 <TableCell className="px-6 py-4 font-medium">
                   {shortened}
                 </TableCell>
-                <TableCell className="px-6 py-4">{created}</TableCell>
+                <TableCell className="px-6 py-4">{createdAt}</TableCell>
                 <TableCell className="px-6 py-4">
                   <div className="flex gap-2">
                     <Button

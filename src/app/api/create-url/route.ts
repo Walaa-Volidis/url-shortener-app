@@ -14,12 +14,12 @@ export async function POST(request: Request) {
     const originalUrl = formData.get("original");
     const userId = formData.get("userId");
     const uniqueId = nanoid(6);
-    const shortenedUrl = `${baseUrl}${uniqueId}`;
+    const shortened = `${baseUrl}${uniqueId}`;
 
     const urlData = ZUrlSchema.parse({
       original: originalUrl,
       userId: userId,
-      shortened: shortenedUrl,
+      shortened: shortened,
     });
 
     const response = await prisma.shortenedURL.create({ data: urlData });
