@@ -1,4 +1,4 @@
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import { z } from "zod";
 
 const ZUrlSchema = z.object({
@@ -7,6 +7,11 @@ const ZUrlSchema = z.object({
   shortened: z.string(),
   userId: z.string(),
   createdAt: z.string(),
+});
+
+const ZUrlAddSchema = z.object({
+  original: z.string(),
+  userId: z.string(),
 });
 
 export type Url = z.infer<typeof ZUrlSchema>;
@@ -27,6 +32,12 @@ export function useUrl(userId: string | undefined) {
   );
   const addUrl = async (formData: FormData) => {
     try {
+      const formDataUrl = ZUrlAddSchema.parse({
+        original: formData.get("original"),
+        userId: formData.get("userId"),
+      });
+      mutate(`/api/list-urls`, [...(urls || []), formDataUrl], false);
+      console.log("hey formdataUrl", formDataUrl);
       const response = await fetch("/api/create-url", {
         method: "POST",
         body: formData,
@@ -38,11 +49,27 @@ export function useUrl(userId: string | undefined) {
       console.log(userId);
       const url = await response.json();
       ZUrlSchema.parse(url);
+      mutate(`/api/list-urls`);
     } catch (error) {
       console.error("Failed to add URL:", error);
+      mutate(`/api/list-urls`);
     }
   };
 
+  //   try {
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to add task");
+  //     }
+
+  //     const newTask = await response.json();
+  //     TaskWithIdSchema.parse(newTask);
+  //     mutate(`/api/list-tasks?${query}`);
+  //   } catch (error) {
+  //     console.error("Failed to add task:", error);
+  //     mutate(`/api/list-tasks?${query}`);
+  //   }
+  // };
   return {
     urls,
     error,
