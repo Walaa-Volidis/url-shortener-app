@@ -10,19 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function URLShortener() {
   const { user } = useUser();
   const userId = user?.id;
-  const { addUrl } = useUrl(userId);
-  const shortenedUrls = [
-    {
-      original: "https://very-long-example-url.com/with/many/parameters?id=123",
-      shortened: "short.ly/ab1x9",
-      created: "2024-11-23",
-    },
-    {
-      original: "https://another-long-example.com/blog/post/12345",
-      shortened: "short.ly/cd2y8",
-      created: "2024-11-22",
-    },
-  ];
+  const { urls, addUrl } = useUrl(userId);
 
   const handleCopy = (shortenedUrl: string) => {
     navigator.clipboard.writeText(shortenedUrl);
@@ -36,7 +24,7 @@ export default function URLShortener() {
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       {userId && <ShortenUrl userId={userId} addUrl={addUrl} />}
       <UrlList
-        shortenedUrls={shortenedUrls}
+        shortenedUrls={urls}
         onCopy={handleCopy}
         onVisit={handleVisit}
       />
