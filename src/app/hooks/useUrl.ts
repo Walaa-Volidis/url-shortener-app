@@ -54,6 +54,22 @@ export function useUrl(userId: string | undefined) {
     }
   };
 
+  const getOriginalUrl = async (shortenedUrl: string) => {
+    try {
+      const response = await fetch(
+        `/api/redirect?shortened=${encodeURIComponent(shortenedUrl)}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to get original URL");
+      }
+      const data = await response.json();
+      return data.original;
+    } catch (error) {
+      console.error("Failed to get original URL:", error);
+      return null;
+    }
+  };
+
   //   try {
 
   //     if (!response.ok) {
@@ -72,5 +88,6 @@ export function useUrl(userId: string | undefined) {
     urls,
     error,
     addUrl,
+    getOriginalUrl,
   };
 }

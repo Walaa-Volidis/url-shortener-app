@@ -53,9 +53,7 @@ export default function UrlList({
                 <TableCell className="px-6 py-4 font-medium">
                   {shortened}
                 </TableCell>
-                <TableCell className="px-6 py-4">
-                  {new Date(createdAt).toISOString().split("T")[0]}
-                </TableCell>
+                <TableCell className="px-6 py-4">{createdAt}</TableCell>
                 <TableCell className="px-6 py-4">
                   <div className="flex gap-2">
                     <Button

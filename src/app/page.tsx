@@ -10,15 +10,18 @@ import "react-toastify/dist/ReactToastify.css";
 export default function URLShortener() {
   const { user } = useUser();
   const userId = user?.id;
-  const { urls, addUrl } = useUrl(userId);
+  const { urls, addUrl, getOriginalUrl } = useUrl(userId);
 
   const handleCopy = (shortenedUrl: string) => {
     navigator.clipboard.writeText(shortenedUrl);
   };
 
-  const handleVisit = (shortenedUrl: string) => {
-    window.open(`https://${shortenedUrl}`, "_blank");
-  };
+ const handleVisit = async (shortenedUrl: string) => {
+   const originalUrl = await getOriginalUrl(shortenedUrl);
+   if (originalUrl) {
+     window.open(originalUrl, "_blank");
+   }
+ };
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
