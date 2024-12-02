@@ -37,7 +37,6 @@ export function useUrl(userId: string | undefined) {
         userId: formData.get("userId"),
       });
       mutate(`/api/list-urls`, [...(urls || []), formDataUrl], false);
-      console.log("hey formdataUrl", formDataUrl);
       const response = await fetch("/api/create-url", {
         method: "POST",
         body: formData,
@@ -46,7 +45,6 @@ export function useUrl(userId: string | undefined) {
       if (!response.ok) {
         throw new Error("Failed to add URL");
       }
-      console.log(userId);
       const url = await response.json();
       ZUrlSchema.parse(url);
       mutate(`/api/list-urls`);

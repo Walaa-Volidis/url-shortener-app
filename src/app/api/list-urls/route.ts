@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { z } from "zod";
+import { getUser } from "@/lib/get-user";
 
 const ZUrlSchema = z.object({
   id: z.string(),
@@ -10,13 +11,16 @@ const ZUrlSchema = z.object({
 });
 
 export async function GET() {
-  const response = await prisma.shortenedURL.findMany({});
-  console.log("hey response", response);
+  const user = await getUser();
+  const response = await prisma.shortenedURL.findMany({
+    where: {
+      userId: user.id,
+    },
+  });
   const formattedResponse = response.map((url) => ({
     ...url,
     createdAt: url.createdAt.toISOString(),
   }));
-  console.log("hey formated", formattedResponse);
   const validatedResponse = ZUrlSchema.array().parse(formattedResponse);
   return Response.json(validatedResponse);
 }
