@@ -2,7 +2,7 @@
 import React from "react";
 import ShortenUrl from "./components/shorten-url";
 import UrlList from "./components/url-list";
-import { useUrl } from "@/app/hooks/useUrl";
+import { useUrl } from "@/app/hooks/use-url";
 import { useUser } from "@clerk/nextjs";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
