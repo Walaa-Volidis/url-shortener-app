@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "URL not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ original: url.original });
+    return NextResponse.redirect(url.original, 301);
   } catch (error) {
     console.error(error);
     return NextResponse.json(
