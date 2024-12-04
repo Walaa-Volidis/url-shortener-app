@@ -37,7 +37,6 @@ export function useUrl(userId: string | undefined) {
         userId: formData.get("userId"),
       });
       mutate(`/api/list-urls`, [...(urls || []), formDataUrl], false);
-      console.log("hey formdataUrl", formDataUrl);
       const response = await fetch("/api/create-url", {
         method: "POST",
         body: formData,
@@ -46,13 +45,28 @@ export function useUrl(userId: string | undefined) {
       if (!response.ok) {
         throw new Error("Failed to add URL");
       }
-      console.log(userId);
       const url = await response.json();
       ZUrlSchema.parse(url);
       mutate(`/api/list-urls`);
     } catch (error) {
       console.error("Failed to add URL:", error);
       mutate(`/api/list-urls`);
+    }
+  };
+
+  const getOriginalUrl = async (shortenedUrl: string) => {
+    try {
+      const response = await fetch(
+        `/api/redirect?shortened=${encodeURIComponent(shortenedUrl)}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to get original URL");
+      }
+      const data = await response.json();
+      return data.original;
+    } catch (error) {
+      console.error("Failed to get original URL:", error);
+      return null;
     }
   };
 
@@ -74,5 +88,6 @@ export function useUrl(userId: string | undefined) {
     urls,
     error,
     addUrl,
+    getOriginalUrl,
   };
 }

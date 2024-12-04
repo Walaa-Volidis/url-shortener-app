@@ -1,26 +1,20 @@
 import prisma from "@/lib/prisma";
-import { z } from "zod";
 import { nanoid } from "nanoid";
 
-const ZUrlSchema = z.object({
-  original: z.string(),
-  shortened: z.string(),
-  userId: z.string(),
-});
 const baseUrl = "https://shorturl.at/";
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
-    const originalUrl = formData.get("original");
-    const userId = formData.get("userId");
+    const originalUrl = formData.get("original") as string;
+    const userId = formData.get("userId") as string;
     const uniqueId = nanoid(6);
     const shortened = `${baseUrl}${uniqueId}`;
 
-    const urlData = ZUrlSchema.parse({
+    const urlData = {
       original: originalUrl,
       userId: userId,
       shortened: shortened,
-    });
+    };
 
     const response = await prisma.shortenedURL.create({ data: urlData });
     return new Response(JSON.stringify(response), { status: 201 });
