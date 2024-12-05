@@ -10,27 +10,22 @@ import "react-toastify/dist/ReactToastify.css";
 export default function URLShortener() {
   const { user } = useUser();
   const userId = user?.id;
-  const { urls, addUrl, getOriginalUrl } = useUrl(userId);
+  const { urls, addUrl } = useUrl(userId);
 
   const handleCopy = (shortenedUrl: string) => {
     navigator.clipboard.writeText(shortenedUrl);
   };
 
- const handleVisit = async (shortenedUrl: string) => {
-   const originalUrl = await getOriginalUrl(shortenedUrl);
-   if (originalUrl) {
-     window.open(originalUrl, "_blank");
-   }
- };
+  const handleVisit = (shortenedUrl: string) => {
+    window.location.href = `/api/redirect?shortened=${encodeURIComponent(
+      shortenedUrl
+    )}`;
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       {userId && <ShortenUrl userId={userId} addUrl={addUrl} />}
-      <UrlList
-        shortenedUrls={urls}
-        onCopy={handleCopy}
-        onVisit={handleVisit}
-      />
+      <UrlList shortenedUrls={urls} onCopy={handleCopy} onVisit={handleVisit} />
       <ToastContainer />
     </div>
   );
