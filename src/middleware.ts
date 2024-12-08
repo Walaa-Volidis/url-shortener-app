@@ -1,6 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { z } from "zod";
-import prisma from "@/lib/prisma";
+//import { upsertUser } from "./lib/upsert-user";
 
 const ZSessionClaims = z.object({
   email: z.string().email(),
@@ -18,17 +18,12 @@ export default clerkMiddleware(async (auth, request) => {
   const { sessionClaims } = await auth();
   if (sessionClaims) {
     const { email, name } = ZSessionClaims.parse(sessionClaims);
-
-    await prisma.user.upsert({
-      where: { email },
-      update: {
-        name,
-        email,
+    await fetch("http://localhost:3000/api/upsert-user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      create: {
-        name,
-        email,
-      },
+      body: JSON.stringify({ email, name }),
     });
   }
 });
