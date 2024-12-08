@@ -69,21 +69,6 @@ export function useUrl(userId: string | undefined) {
       return null;
     }
   };
-
-  //   try {
-
-  //     if (!response.ok) {
-  //       throw new Error("Failed to add task");
-  //     }
-
-  //     const newTask = await response.json();
-  //     TaskWithIdSchema.parse(newTask);
-  //     mutate(`/api/list-tasks?${query}`);
-  //   } catch (error) {
-  //     console.error("Failed to add task:", error);
-  //     mutate(`/api/list-tasks?${query}`);
-  //   }
-  // };
   return {
     urls,
     error,
