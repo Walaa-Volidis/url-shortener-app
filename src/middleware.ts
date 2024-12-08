@@ -1,6 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { z } from "zod";
-//import { upsertUser } from "./lib/upsert-user";
 
 const ZSessionClaims = z.object({
   email: z.string().email(),
@@ -14,14 +13,16 @@ export default clerkMiddleware(async (auth, request) => {
     await auth.protect();
     //return;
   }
-
-  const { sessionClaims } = await auth();
+  const { sessionClaims, getToken } = await auth();
   if (sessionClaims) {
     const { email, name } = ZSessionClaims.parse(sessionClaims);
+
+    const token = await getToken();
     await fetch("http://localhost:3000/api/upsert-user", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ email, name }),
     });
