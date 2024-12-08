@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    console.log("Request: ", request);
     const { name, email } = await request.json();
     await prisma.user.upsert({
       where: { email },

@@ -18,7 +18,7 @@ export default clerkMiddleware(async (auth, request) => {
     const { email, name } = ZSessionClaims.parse(sessionClaims);
 
     const token = await getToken();
-    await fetch("http://localhost:3000/api/upsert-user", {
+    await fetch(`${process.env.NEXT_PUBLIC_ENDPOINT}upsert-user`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
